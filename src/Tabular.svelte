@@ -1,5 +1,5 @@
 <script>
-  import { firstRowToDisplay } from './pagination'
+  import { firstRowToDisplay } from './stores/pagination'
   import TabImageCell from './TabImageCell.svelte'
   import TabPillCell from './TabPillCell.svelte'
   import TabTextCell from './TabTextCell.svelte'
