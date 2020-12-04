@@ -21,7 +21,8 @@ To install this package use the following NPM command:
 
 All you have to do to use `tabular-svelte` is to create a
 Javascript object defining where your data is coming from and 
-the format of each cell in a column.
+the format of each cell in a column, and then include the `<Tabular>`
+component in your markup.
 
 ### Format Object
 
@@ -78,6 +79,19 @@ are currently three format types:
 | `decorators`   | Specifies the background color to be applied to the cell. Currently this is only used on `pill` columns.<br/><br/>`value`:The data value the decorator will be applied to.<br/>`pillColor`: The background color to be used for `pill` columns. |
 
 ### Tabular Component
+
+Once you've defined a format object all you need to do is include a
+`<Tabular>` component as markup in your Svelte file like so:
+
+```
+<Tabular definition={ personRpt } />
+```
+
+That's it! Tabular will call the `reader` function you supply to get the data
+and will then render it based using the `columns` specification you defined
+in the format object. 
+
+You can see an example in this [repo](https://github.com/jdmedlock/tabular-svelte-test).
 ## Support
 
 If you have questions or encounter any issues feel free to 
