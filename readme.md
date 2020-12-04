@@ -105,6 +105,9 @@ these project documents:
 - [Colaborator Guide](./docs/COLLABORATOR_GUIDE.md)
 - [Contributing](./docs/CONTRIBUTING.md)
 
+## Release History
+
+You can find what changed, when in the [release history](./docs/RELEASE_HISTORY.md) 
 ## License
 
 Copyright 2020 <COPYRIGHT Jim D. Medlock>
