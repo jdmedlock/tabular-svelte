@@ -1,5 +1,6 @@
 # tabular-svelte
 
+![Tabular Screenshot](./docs/tabular_demo_screenshot.png)
 ## Overview
 
 `tabular-svelte` provides a simple way to present data in a tabular format.
@@ -18,6 +19,65 @@ To install this package use the following NPM command:
 
 ## Usage
 
+All you have to do to use `tabular-svelte` is to create a
+Javascript object defining where your data is coming from and 
+the format of each cell in a column.
+
+### Format Object
+
+The Javascript object you create is referred to as the "format"
+object. You can name it anything you'd like and the following issues
+an example of how it's formatted:
+```
+const personRpt = {
+		dataSource: {
+			reader: getPersonData,
+			rowsPerPage: 4, // Specify -1 for all rows
+			totalRows: PersonData.length,
+		},
+		columns: [
+			{ type: 'image', heading: 'Avatar', dataName: 'avatarImg' },
+			{ type: 'text', heading: 'email', dataName: 'email' },
+			{ type: 'text', heading: 'Last Name', dataName: 'lastName' },
+			{ type: 'text', heading: 'First Name', dataName: 'firstName' },
+			{ type: 'pill', heading: 'Status', dataName: 'status',
+					decorators: [ 
+						{ value: 'Active', pillColor: 'bg-green-400' },
+						{ value: 'Inactive', pillColor: 'bg-red-400' },
+					]
+			}
+		]
+	}
+```
+
+#### `dataSource` Section
+`dataSource` defines a reference to a reader function that 
+supplies the data rows, the number of rows to be displayed on 
+each page, and the total number of rows provided by your reader 
+function.
+
+| Attribute | Value |
+|:----------|:------|
+| `reader`      | A function Tabular will invoke to get the rows to be displayed. This function should return all available rows and Tabular will figure out how to format them and allow the user to scroll through them them |
+| `rowsPerPage` | The maximum number of rows to be displayed on the page. This also defines the number of rows that will be moved backward or forward during a scrolling operation. |
+| `totalRows`   | The total number of rows in the JS object returned by `reader`. |
+
+#### `columns` Section 
+`columns` defines the format of the cells in each column. There are
+are currently three format types:
+
+- `text`: Plain text
+- `image`: An image
+- `pill`: Text styled in a color-filled oval
+
+| Attribute      | Value |
+|:---------------|:------|
+| `type`         | May be one of the following to specify have values in this column will be formatted:<br/><br/>`text`: Plain text<br/>`image`: An image with a round border<br/>`pill`: Text value encolosed in a color-filled oval |
+| `heading`      | The heading for this column |
+| `dataName`     | Name of the key for this field in the JS object returned by the `reader` |
+| `decorators`   | Specifies the background color to be applied to the cell. Currently this is only used on `pill` columns.<br/><br/>`value`:The data value the decorator will be applied to.<br/>`pillColor`: The background color to be used for `pill` columns. |
+
+### Tabular Component
 ## Support
 
 If you have questions or encounter any issues feel free to 
