@@ -69,11 +69,13 @@
 <!-- Tabular Data Rows -->
 <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
   <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
-    <table class="table">
+    <table class="min-w-full leading-normal">
       <thead>
         <tr>
           {#each definition.columns as column}
-          <th class="column-heading">
+          <th class="px-2 py-3 border-b-2 border-gray-200 bg-gray-100
+            text-left text-xs font-semibold text-gray-600 uppercase
+            tracking-wider">
             { column.heading }
           </th>
           {/each}
@@ -83,7 +85,7 @@
         {#each componentRows as row}
           <tr>
           {#each row as cell}
-            <td class="table-data">
+            <td class="px-2 py-5 border-b border-gray-200 bg-white text-sm">
               {#if cell.component === TabPillCell}
                 <svelte:component this={ cell.component } value={ cell.value } decorators={ cell.decorators } />
               {:else}
@@ -105,19 +107,3 @@
 
   </div>
 </div>
-
-<style type="text/postcss">
-  .table {
-    @apply min-w-full leading-normal;
-  }
-
-  .column-heading {
-    @apply px-2 py-3 border-b-2 border-gray-200 bg-gray-100
-      text-left text-xs font-semibold text-gray-600 uppercase
-      tracking-wider;
-  }
-
-  .table-data {
-    @apply px-2 py-5 border-b border-gray-200 bg-white text-sm;
-  }
-</style>

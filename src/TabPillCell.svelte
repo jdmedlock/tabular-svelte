@@ -8,21 +8,7 @@
 
 </script>
 
-<span class="image-wrapper">
-  <span aria-hidden class="pill-wrapper { pillColor }" />
-  <span class="pill">{ value }</span>
+<span class="relative inline-block py-1 font-medium text-gray-800 leading-tight">
+  <span aria-hidden class="absolute inset-0 opacity-50 rounded-full { pillColor }" />
+  <span class="relative p-2;">{ value }</span>
 </span>
-
-<style type="text/postcss">
-  .image-wrapper {
-    @apply relative inline-block py-1 font-medium text-gray-800 leading-tight;
-  }
-
-  .pill-wrapper {
-    @apply absolute inset-0 opacity-50 rounded-full;
-  }
-
-  .pill {
-    @apply relative p-2;
-  }
-</style>
