@@ -1,6 +1,6 @@
 {
   "name": "tabular-svelte",
-  "version": "0.1.2",
+  "version": "0.1.9",
   "description": "A Svelte component to display tabular data",
   "repository": {
     "type": "git",
@@ -10,7 +10,7 @@
   "bugs": {
     "url": "https://github.com/jdmedlock/tabular-svelte/issues"
   },
-  "main": "dist/index.js",
+  "main": "dist/bundle.js",
   "module": "dist/index.mjs",
   "svelte": "src/index.js",
   "scripts": {
