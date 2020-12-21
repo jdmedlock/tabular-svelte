@@ -19,7 +19,7 @@ To install this package use the following NPM command:
 
 ## Usage
 
-All you have to do to use `tabular-svelte` is to import the module like so:
+All you  have to do to use `tabular-svelte` is to import the module like so:
 ```
 import Tabular from 'tabular-svelte/src/Tabular.svelte'
 ```
