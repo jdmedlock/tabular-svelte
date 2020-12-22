@@ -7,11 +7,14 @@
   export let scrollForward;
   export let updateRowsPerPage;
 
-  $: lastRowOnPage =
-    $firstRowToDisplay + $rowsPerPage > totalNoRows
-      ? $firstRowToDisplay + $rowsPerPage - 1
-      : $firstRowToDisplay + $rowsPerPage;
-  $: lastRowOnPage = $rowsPerPage > totalNoRows ? totalNoRows : lastRowOnPage
+  $: lastRowOnPage = ($rowsPerPage >= totalNoRows) 
+    // Case: All rows fit on one page
+    ? totalNoRows
+    : ($firstRowToDisplay + $rowsPerPage) > totalNoRows
+      // Case: More rows to display
+      ? totalNoRows
+      // Case: Last page
+      : $firstRowToDisplay + $rowsPerPage
 
   let value
   const handleRppChange = () => {

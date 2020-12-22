@@ -14,7 +14,6 @@
       ? data.length : definition.dataSource.rowsPerPage
 
   onMount(async () => {
-    console.log(`onMount - noRowsPerPage: ${ noRowsPerPage }`)
     rowsPerPage.reset(noRowsPerPage)
 	});
 
@@ -68,7 +67,6 @@
   }
 
   const scrollForward = () => {
-    console.log()
     const newFirstRowToDisplay = $firstRowToDisplay + $rowsPerPage
     if (newFirstRowToDisplay <= definition.dataSource.totalRows) {
       firstRowToDisplay.forward($rowsPerPage)
@@ -78,7 +76,6 @@
   }
 
   const updateRowsPerPage = (noRowsPerPage) => {
-    console.log(`Tabular - New value: ${ noRowsPerPage }`)
     rowsPerPage.reset(noRowsPerPage)
   }
 
