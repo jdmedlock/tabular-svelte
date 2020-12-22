@@ -1,18 +1,22 @@
 <script>
-  export let firstRowToDisplay;
-  export let rowsPerPage;
+  import { firstRowToDisplay } from './stores/firstRowToDisplay'
+  import { rowsPerPage } from './stores/rowsPerPage'
+
+  //export let firstRowToDisplay;
+  //export let rowsPerPage;
   export let totalNoRows;
   export let scrollBackward;
   export let scrollForward;
 
   $: lastRowOnPage =
-    firstRowToDisplay + rowsPerPage > totalNoRows
-      ? firstRowToDisplay + rowsPerPage - 1
-      : firstRowToDisplay + rowsPerPage;
+    $firstRowToDisplay + $rowsPerPage > totalNoRows
+      ? $firstRowToDisplay + $rowsPerPage - 1
+      : $firstRowToDisplay + $rowsPerPage;
 
-  let value =10
+  let value = 10
   const handleRppChange = () => {
     console.log(`New selection: ${ value }`)
+    rowsPerPage.reset(value)
   }
 </script>
 
@@ -53,7 +57,7 @@
     </div>
   </div>
   <span class="text-xs text-gray-900 sm:text-sm">
-    Showing { firstRowToDisplay + 1 } to { lastRowOnPage } of { totalNoRows } rows
+    Showing { $firstRowToDisplay + 1 } to { lastRowOnPage } of { totalNoRows } rows
   </span>
   <div class="inline-flex mt-2 sm:mt-0">
     <button on:click={ scrollBackward }

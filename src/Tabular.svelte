@@ -1,5 +1,7 @@
 <script>
-  import { firstRowToDisplay } from './stores/pagination'
+  import { firstRowToDisplay } from './stores/firstRowToDisplay'
+  import { rowsPerPage } from './stores/rowsPerPage'
+
   import TabImageCell from './TabImageCell.svelte'
   import TabPillCell from './TabPillCell.svelte'
   import TabTextCell from './TabTextCell.svelte'
@@ -57,16 +59,17 @@
   }
 
   const scrollForward = () => {
-    const newFirstRowToDisplay = $firstRowToDisplay + rowsPerPage
+    const newFirstRowToDisplay = $firstRowToDisplay + $rowsPerPage
     if (newFirstRowToDisplay <= definition.dataSource.totalRows) {
-      firstRowToDisplay.forward(rowsPerPage)
-      data = retrieveDataPage($firstRowToDisplay, definition.dataSource.rowsPerPage)
+      firstRowToDisplay.forward($rowsPerPage)
+      data = retrieveDataPage($firstRowToDisplay, $rowsPerPage)
       componentRows = formatComponents()
     }
   }
 
-  const rowsPerPage = definition.dataSource.rowsPerPage === -1 
+  const noRowsPerPage = definition.dataSource.rowsPerPage === -1 
     ? data.length : definition.dataSource.rowsPerPage
+  rowsPerPage.reset(noRowsPerPage)
 
 </script>
 
@@ -76,9 +79,7 @@
   <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
 
     <!-- Pagination Controls -->
-    <TabPageCtls firstRowToDisplay={ $firstRowToDisplay }
-      rowsPerPage={ rowsPerPage } 
-      totalNoRows={ definition.dataSource.totalRows }
+    <TabPageCtls totalNoRows={ definition.dataSource.totalRows }
       scrollBackward={ scrollBackward } 
       scrollForward={ scrollForward } />
 
@@ -113,11 +114,8 @@
     </table>
 
     <!-- Pagination Controls -->
-    <TabPageCtls firstRowToDisplay={ $firstRowToDisplay }
-      rowsPerPage={ rowsPerPage } 
-      totalNoRows={ definition.dataSource.totalRows }
+    <TabPageCtls totalNoRows={ definition.dataSource.totalRows }
       scrollBackward={ scrollBackward } 
       scrollForward={ scrollForward } />
-
   </div>
 </div>
