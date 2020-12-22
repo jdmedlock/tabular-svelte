@@ -66,9 +66,17 @@
 
 <!-- Based on https://tailwindcomponents.com/component/table-responsive-with-filters -->
 
-<!-- Tabular Data Rows -->
 <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
   <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
+
+    <!-- Pagination Controls -->
+    <TabPageCtls firstRowToDisplay={ $firstRowToDisplay }
+      rowsPerPage={ rowsPerPage } 
+      totalNoRows={ definition.dataSource.totalRows }
+      scrollBackward={ scrollBackward } 
+      scrollForward={ scrollForward } />
+
+    <!-- Tabular Data Rows -->
     <table class="min-w-full leading-normal">
       <thead>
         <tr>
