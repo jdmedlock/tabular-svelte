@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from 'svelte';
   import { firstRowToDisplay } from './stores/firstRowToDisplay'
   import { rowsPerPage } from './stores/rowsPerPage'
 
@@ -7,7 +8,15 @@
   import TabTextCell from './TabTextCell.svelte'
   import TabPageCtls from './TabPageCtls.svelte'
 
-  export let definition 
+  export let definition
+
+  const noRowsPerPage = definition.dataSource.rowsPerPage === -1 
+      ? data.length : definition.dataSource.rowsPerPage
+
+  onMount(async () => {
+    console.log(`onMount - noRowsPerPage: ${ noRowsPerPage }`)
+    rowsPerPage.reset(noRowsPerPage)
+	});
 
   const retrieveDataPage = (rowsToScroll, rowsPerPage) => {
     return definition.dataSource.reader(rowsToScroll, rowsPerPage)
@@ -46,19 +55,20 @@
     })
   }
 
-  let data = retrieveDataPage(0,definition.dataSource.rowsPerPage)
+  let data = retrieveDataPage(0,$rowsPerPage)
   let componentRows = formatComponents()
 
   const scrollBackward = () => {
-    const newFirstRowToDisplay = $firstRowToDisplay - rowsPerPage
+    const newFirstRowToDisplay = $firstRowToDisplay - $rowsPerPage
     if (newFirstRowToDisplay >= 0) {
-      firstRowToDisplay.backward(rowsPerPage)
-      data = retrieveDataPage($firstRowToDisplay, definition.dataSource.rowsPerPage)
+      firstRowToDisplay.backward($rowsPerPage)
+      data = retrieveDataPage($firstRowToDisplay, $rowsPerPage)
       componentRows = formatComponents()
     }
   }
 
   const scrollForward = () => {
+    console.log()
     const newFirstRowToDisplay = $firstRowToDisplay + $rowsPerPage
     if (newFirstRowToDisplay <= definition.dataSource.totalRows) {
       firstRowToDisplay.forward($rowsPerPage)
@@ -67,9 +77,10 @@
     }
   }
 
-  const noRowsPerPage = definition.dataSource.rowsPerPage === -1 
-    ? data.length : definition.dataSource.rowsPerPage
-  rowsPerPage.reset(noRowsPerPage)
+  const updateRowsPerPage = (noRowsPerPage) => {
+    console.log(`Tabular - New value: ${ noRowsPerPage }`)
+    rowsPerPage.reset(noRowsPerPage)
+  }
 
 </script>
 
@@ -81,7 +92,8 @@
     <!-- Pagination Controls -->
     <TabPageCtls totalNoRows={ definition.dataSource.totalRows }
       scrollBackward={ scrollBackward } 
-      scrollForward={ scrollForward } />
+      scrollForward={ scrollForward }
+      updateRowsPerPage={ updateRowsPerPage } />
 
     <!-- Tabular Data Rows -->
     <table class="min-w-full leading-normal">
@@ -116,6 +128,7 @@
     <!-- Pagination Controls -->
     <TabPageCtls totalNoRows={ definition.dataSource.totalRows }
       scrollBackward={ scrollBackward } 
-      scrollForward={ scrollForward } />
+      scrollForward={ scrollForward }
+      updateRowsPerPage={ updateRowsPerPage } />
   </div>
 </div>

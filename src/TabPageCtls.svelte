@@ -2,21 +2,20 @@
   import { firstRowToDisplay } from './stores/firstRowToDisplay'
   import { rowsPerPage } from './stores/rowsPerPage'
 
-  //export let firstRowToDisplay;
-  //export let rowsPerPage;
   export let totalNoRows;
   export let scrollBackward;
   export let scrollForward;
+  export let updateRowsPerPage;
 
   $: lastRowOnPage =
     $firstRowToDisplay + $rowsPerPage > totalNoRows
       ? $firstRowToDisplay + $rowsPerPage - 1
       : $firstRowToDisplay + $rowsPerPage;
+  $: lastRowOnPage = $rowsPerPage > totalNoRows ? totalNoRows : lastRowOnPage
 
-  let value = 10
+  let value
   const handleRppChange = () => {
-    console.log(`New selection: ${ value }`)
-    rowsPerPage.reset(value)
+    updateRowsPerPage(value)
   }
 </script>
 
