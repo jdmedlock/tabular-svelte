@@ -1,9 +1,9 @@
 <script>
   export let value
-  export let decorators
+  export let styles
 
-  const pillColor = decorators.reduce((color, decorator) => { 
-    return decorator.value === value ? decorator.pillColor : color
+  const pillColor = styles.reduce((color, style) => { 
+    return style.value === value ? style.pillColor : color
   }, '')
 
 </script>

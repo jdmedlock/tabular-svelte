@@ -24,8 +24,14 @@
             componentInvocation = { component: TabImageCell, value: `${ cellValue }` }
             break
           case 'pill':
+            // Accept `decorators` as an alias for `styles`
+            if (definition.columns[index].decorators) {
+              componentInvocation = { component: TabPillCell, value: `${ cellValue }`, 
+                styles: definition.columns[index].decorators }
+              break
+            }
             componentInvocation = { component: TabPillCell, value: `${ cellValue }`, 
-              decorators: definition.columns[index].decorators }
+              styles: definition.columns[index].styles }
             break
           case 'text':
             componentInvocation = { component: TabTextCell, value: `${ cellValue }` }
@@ -95,7 +101,7 @@
           {#each row as cell}
             <td class="px-2 py-5 border-b border-gray-200 bg-white text-sm">
               {#if cell.component === TabPillCell}
-                <svelte:component this={ cell.component } value={ cell.value } decorators={ cell.decorators } />
+                <svelte:component this={ cell.component } value={ cell.value } styles={ cell.styles } />
               {:else}
                 <svelte:component this={ cell.component } value={ cell.value } />
               {/if}
