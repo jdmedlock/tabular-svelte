@@ -7,7 +7,7 @@
   import TabTextCell from './TabTextCell.svelte'
   import TabPageCtls from './TabPageCtls.svelte'
 
-  export let definition
+  export let definition 
 
   const retrieveDataPage = (rowsToScroll, rowsPerPage) => {
     return definition.dataSource.reader(rowsToScroll, rowsPerPage)
