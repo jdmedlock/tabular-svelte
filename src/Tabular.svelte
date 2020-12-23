@@ -10,11 +10,11 @@
 
   export let definition
 
-  let noRowsPerPage 
+  let currentNoRowsPerPage 
   if ($rowsPerPage === 0) {
-    noRowsPerPage = definition.dataSource.rowsPerPage === -1 
+    currentNoRowsPerPage = definition.dataSource.rowsPerPage === -1 
       ? data.length : definition.dataSource.rowsPerPage
-    rowsPerPage.reset(noRowsPerPage)
+    rowsPerPage.reset(currentNoRowsPerPage)
   }
 
   const retrieveDataPage = (rowsToScroll, rowsPerPage) => {
@@ -76,8 +76,10 @@
   }
 
   const updateRowsPerPage = (noRowsPerPage) => {
+    currentNoRowsPerPage = noRowsPerPage
     rowsPerPage.reset(noRowsPerPage)
-    console.log(`Tabular - updateRowsPerPage - $rowsPerPage: `,$rowsPerPage)
+    data = retrieveDataPage(0,$rowsPerPage)
+    componentRows = formatComponents()
   }
 
 </script>
