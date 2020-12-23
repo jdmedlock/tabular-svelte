@@ -12,10 +12,11 @@
 
   const noRowsPerPage = definition.dataSource.rowsPerPage === -1 
       ? data.length : definition.dataSource.rowsPerPage
+  rowsPerPage.reset(noRowsPerPage)
 
   onMount(async () => {
-    rowsPerPage.reset(noRowsPerPage)
-	});
+    rowsPerPage.reset($rowsPerPage)
+  });
 
   const retrieveDataPage = (rowsToScroll, rowsPerPage) => {
     return definition.dataSource.reader(rowsToScroll, rowsPerPage)

@@ -2,10 +2,12 @@
   import { firstRowToDisplay } from './stores/firstRowToDisplay'
   import { rowsPerPage } from './stores/rowsPerPage'
 
-  export let totalNoRows;
-  export let scrollBackward;
-  export let scrollForward;
-  export let updateRowsPerPage;
+  export let totalNoRows
+  export let scrollBackward
+  export let scrollForward
+  export let updateRowsPerPage
+
+  const rowPerPageOptions = rowsPerPage.rowPerPageOptions()
 
   $: lastRowOnPage = ($rowsPerPage >= totalNoRows) 
     // Case: All rows fit on one page
@@ -28,10 +30,12 @@
     <div class="flex flex-row mb-1 sm:mb-0">
       <div class="relative">
         <select bind:value on:change={ handleRppChange }
-          class="text-sm appearance-none h-full rounded-l border block w-full bg-white border-gray-400 text-gray-700 py-1 px-4 pr-6 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-          <option value="10">10</option>
-          <option value="25">25</option>
-          <option value="50">50</option> 
+          class="text-sm appearance-none h-full rounded-l border block w-full 
+            bg-white border-gray-400 text-gray-700 py-1 px-4 pr-6 leading-tight 
+            focus:outline-none focus:bg-white focus:border-gray-500">
+          {#each rowPerPageOptions as optionValue}
+            <option value={ optionValue }>{ optionValue.rpp }</option>
+          {/each}
         </select>
         <div
           class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
