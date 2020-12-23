@@ -1,14 +1,14 @@
 <script>
   export let value
-  export let decorators
+  export let styles
 
-  const pillColor = decorators.reduce((color, decorator) => { 
-    return decorator.value === value ? decorator.pillColor : color
+  const pillColor = styles.reduce((color, style) => { 
+    return style.value === value ? style.pillColor : color
   }, '')
 
 </script>
 
 <span class="relative inline-block py-1 font-medium text-gray-800 leading-tight">
   <span aria-hidden class="absolute inset-0 opacity-50 rounded-full { pillColor }" />
-  <span class="relative p-2;">{ value }</span>
+  <span class="relative p-2">{ value }</span>
 </span>

@@ -19,7 +19,7 @@ To install this package use the following NPM command:
 
 ## Usage
 
-All you have to do to use `tabular-svelte` is to import the module like so:
+All you  have to do to use `tabular-svelte` is to import the module like so:
 ```
 import Tabular from 'tabular-svelte/src/Tabular.svelte'
 ```
@@ -47,7 +47,7 @@ const personRpt = {
 			{ type: 'text', heading: 'Last Name', dataName: 'lastName' },
 			{ type: 'text', heading: 'First Name', dataName: 'firstName' },
 			{ type: 'pill', heading: 'Status', dataName: 'status',
-					decorators: [ 
+					styles: [ 
 						{ value: 'Active', pillColor: 'bg-green-400' },
 						{ value: 'Inactive', pillColor: 'bg-red-400' },
 					]
@@ -81,7 +81,7 @@ are currently three format types:
 | `type`         | May be one of the following to specify have values in this column will be formatted:<br/><br/>`text`: Plain text<br/>`image`: An image with a round border<br/>`pill`: Text value encolosed in a color-filled oval |
 | `heading`      | The heading for this column |
 | `dataName`     | Name of the key for this field in the JS object returned by the `reader` |
-| `decorators`   | Specifies the background color to be applied to the cell. Currently this is only used on `pill` columns.<br/><br/>`value`:The data value the decorator will be applied to.<br/>`pillColor`: The background color to be used for `pill` columns. |
+| `styles`   | Specifies the background color to be applied to the cell. Currently this is only used on `pill` columns.<br/><br/>`value`:The data value the style will be applied to.<br/>`pillColor`: The background color to be used for `pill` columns. <br/><br/>You may use a key of either `styles` or `decorators`. However, `decorators` will be deprecated in release 2.0 |
 
 ### Tabular Component
 

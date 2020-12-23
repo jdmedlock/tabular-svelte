@@ -1,11 +1,21 @@
 <script>
-  import { firstRowToDisplay } from './stores/pagination'
+  import { onMount } from 'svelte';
+  import { firstRowToDisplay } from './stores/firstRowToDisplay'
+  import { rowsPerPage } from './stores/rowsPerPage'
+
   import TabImageCell from './TabImageCell.svelte'
   import TabPillCell from './TabPillCell.svelte'
   import TabTextCell from './TabTextCell.svelte'
   import TabPageCtls from './TabPageCtls.svelte'
 
   export let definition
+
+  let currentNoRowsPerPage 
+  if ($rowsPerPage === 0) {
+    currentNoRowsPerPage = definition.dataSource.rowsPerPage === -1 
+      ? data.length : definition.dataSource.rowsPerPage
+    rowsPerPage.reset(currentNoRowsPerPage)
+  }
 
   const retrieveDataPage = (rowsToScroll, rowsPerPage) => {
     return definition.dataSource.reader(rowsToScroll, rowsPerPage)
@@ -24,8 +34,14 @@
             componentInvocation = { component: TabImageCell, value: `${ cellValue }` }
             break
           case 'pill':
+            // Accept `decorators` as an alias for `styles`
+            if (definition.columns[index].decorators) {
+              componentInvocation = { component: TabPillCell, value: `${ cellValue }`, 
+                styles: definition.columns[index].decorators }
+              break
+            }
             componentInvocation = { component: TabPillCell, value: `${ cellValue }`, 
-              decorators: definition.columns[index].decorators }
+              styles: definition.columns[index].styles }
             break
           case 'text':
             componentInvocation = { component: TabTextCell, value: `${ cellValue }` }
@@ -38,37 +54,48 @@
     })
   }
 
-  let data = retrieveDataPage(0,definition.dataSource.rowsPerPage)
+  let data = retrieveDataPage(0,$rowsPerPage)
   let componentRows = formatComponents()
 
   const scrollBackward = () => {
-    const newFirstRowToDisplay = $firstRowToDisplay - rowsPerPage
+    const newFirstRowToDisplay = $firstRowToDisplay - $rowsPerPage
     if (newFirstRowToDisplay >= 0) {
-      firstRowToDisplay.backward(rowsPerPage)
-      data = retrieveDataPage($firstRowToDisplay, definition.dataSource.rowsPerPage)
+      firstRowToDisplay.backward($rowsPerPage)
+      data = retrieveDataPage($firstRowToDisplay, $rowsPerPage)
       componentRows = formatComponents()
     }
   }
 
   const scrollForward = () => {
-    const newFirstRowToDisplay = $firstRowToDisplay + rowsPerPage
+    const newFirstRowToDisplay = $firstRowToDisplay + $rowsPerPage
     if (newFirstRowToDisplay <= definition.dataSource.totalRows) {
-      firstRowToDisplay.forward(rowsPerPage)
-      data = retrieveDataPage($firstRowToDisplay, definition.dataSource.rowsPerPage)
+      firstRowToDisplay.forward($rowsPerPage)
+      data = retrieveDataPage($firstRowToDisplay, $rowsPerPage)
       componentRows = formatComponents()
     }
   }
 
-  const rowsPerPage = definition.dataSource.rowsPerPage === -1 
-    ? data.length : definition.dataSource.rowsPerPage
+  const updateRowsPerPage = (noRowsPerPage) => {
+    currentNoRowsPerPage = noRowsPerPage
+    rowsPerPage.reset(noRowsPerPage)
+    data = retrieveDataPage(0,$rowsPerPage)
+    componentRows = formatComponents()
+  }
 
 </script>
 
 <!-- Based on https://tailwindcomponents.com/component/table-responsive-with-filters -->
 
-<!-- Tabular Data Rows -->
 <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
   <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
+
+    <!-- Pagination Controls -->
+    <TabPageCtls totalNoRows={ definition.dataSource.totalRows }
+      scrollBackward={ scrollBackward } 
+      scrollForward={ scrollForward }
+      updateRowsPerPage={ updateRowsPerPage } />
+
+    <!-- Tabular Data Rows -->
     <table class="min-w-full leading-normal">
       <thead>
         <tr>
@@ -87,7 +114,7 @@
           {#each row as cell}
             <td class="px-2 py-5 border-b border-gray-200 bg-white text-sm">
               {#if cell.component === TabPillCell}
-                <svelte:component this={ cell.component } value={ cell.value } decorators={ cell.decorators } />
+                <svelte:component this={ cell.component } value={ cell.value } styles={ cell.styles } />
               {:else}
                 <svelte:component this={ cell.component } value={ cell.value } />
               {/if}
@@ -99,11 +126,9 @@
     </table>
 
     <!-- Pagination Controls -->
-    <TabPageCtls firstRowToDisplay={ $firstRowToDisplay }
-      rowsPerPage={ rowsPerPage } 
-      totalNoRows={ definition.dataSource.totalRows }
+    <TabPageCtls totalNoRows={ definition.dataSource.totalRows }
       scrollBackward={ scrollBackward } 
-      scrollForward={ scrollForward } />
-
+      scrollForward={ scrollForward }
+      updateRowsPerPage={ updateRowsPerPage } />
   </div>
 </div>
