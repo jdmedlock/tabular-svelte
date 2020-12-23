@@ -1,8 +1,9 @@
 import { writable } from 'svelte/store';
 
-function noRowsPerPage() {
-	let noRowsPerPage = [10, 20, 40]
+function noRowsPerPage() {	
 	const { subscribe, set, update } = writable(0);
+
+	let noRowsPerPage = []
 
 	return {
 		subscribe,

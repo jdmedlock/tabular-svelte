@@ -10,13 +10,12 @@
 
   export let definition
 
-  const noRowsPerPage = definition.dataSource.rowsPerPage === -1 
+  let noRowsPerPage 
+  if ($rowsPerPage === 0) {
+    noRowsPerPage = definition.dataSource.rowsPerPage === -1 
       ? data.length : definition.dataSource.rowsPerPage
-  rowsPerPage.reset(noRowsPerPage)
-
-  onMount(async () => {
-    rowsPerPage.reset($rowsPerPage)
-  });
+    rowsPerPage.reset(noRowsPerPage)
+  }
 
   const retrieveDataPage = (rowsToScroll, rowsPerPage) => {
     return definition.dataSource.reader(rowsToScroll, rowsPerPage)
@@ -78,6 +77,7 @@
 
   const updateRowsPerPage = (noRowsPerPage) => {
     rowsPerPage.reset(noRowsPerPage)
+    console.log(`Tabular - updateRowsPerPage - $rowsPerPage: `,$rowsPerPage)
   }
 
 </script>

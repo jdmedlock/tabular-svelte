@@ -34,7 +34,7 @@
             bg-white border-gray-400 text-gray-700 py-1 px-4 pr-6 leading-tight 
             focus:outline-none focus:bg-white focus:border-gray-500">
           {#each rowPerPageOptions as optionValue}
-            <option value={ optionValue }>{ optionValue.rpp }</option>
+            <option value={ optionValue.rpp }>{ optionValue.rpp }</option>
           {/each}
         </select>
         <div
