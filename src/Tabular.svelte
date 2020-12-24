@@ -10,13 +10,6 @@
 
   export let definition
 
-  let currentNoRowsPerPage 
-  if ($rowsPerPage === 0) {
-    currentNoRowsPerPage = definition.dataSource.rowsPerPage === -1 
-      ? data.length : definition.dataSource.rowsPerPage
-    rowsPerPage.reset(currentNoRowsPerPage)
-  }
-
   const retrieveDataPage = (rowsToScroll, rowsPerPage) => {
     return definition.dataSource.reader(rowsToScroll, rowsPerPage)
   }
@@ -54,9 +47,6 @@
     })
   }
 
-  let data = retrieveDataPage(0,$rowsPerPage)
-  let componentRows = formatComponents()
-
   const scrollBackward = () => {
     const newFirstRowToDisplay = $firstRowToDisplay - $rowsPerPage
     if (newFirstRowToDisplay >= 0) {
@@ -81,6 +71,18 @@
     data = retrieveDataPage(0,$rowsPerPage)
     componentRows = formatComponents()
   }
+
+  let currentNoRowsPerPage 
+  let data = retrieveDataPage(0,$rowsPerPage)
+
+  if ($rowsPerPage === 0) {
+    currentNoRowsPerPage = definition.dataSource.rowsPerPage === -1 
+      ? data.length : definition.dataSource.rowsPerPage
+    rowsPerPage.reset(currentNoRowsPerPage)
+  }
+  
+  data = retrieveDataPage(0,$rowsPerPage)
+  let componentRows = formatComponents()
 
 </script>
 
