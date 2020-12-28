@@ -1,5 +1,7 @@
 <script>
-  import { onMount } from 'svelte';
+  import { FontAwesomeIcon } from 'fontawesome-svelte'
+  import { faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons'
+
   import { firstRowToDisplay } from './stores/firstRowToDisplay'
   import { rowsPerPage } from './stores/rowsPerPage'
 
@@ -72,6 +74,14 @@
     componentRows = formatComponents()
   }
 
+  const sortDescending = () => {
+    console.log('Sort descending ')
+  }
+
+  const sortAscending = () => {
+    console.log('Sort ascending ')
+  }
+
   let currentNoRowsPerPage 
   let data = retrieveDataPage(0,$rowsPerPage)
 
@@ -103,9 +113,19 @@
         <tr>
           {#each definition.columns as column}
           <th class="px-2 py-3 border-b-2 border-gray-200 bg-gray-100
-            text-left text-xs font-semibold text-gray-600 uppercase
+            text-left text-sm font-semibold text-gray-600 uppercase
             tracking-wider">
-            { column.heading }
+            <div class="flex align-middle">
+              { column.heading }
+              <span class="ml-5">
+                <a on:click={ sortDescending }>
+                  <FontAwesomeIcon icon={ faCaretUp } size="lg" class="text-gray-700"/>
+                </a>
+                <a on:click={ sortAscending }>
+                  <FontAwesomeIcon icon={ faCaretDown } size="lg" class="text-gray-700" />
+                </a>
+              </span>
+            </div>
           </th>
           {/each}
         </tr>
