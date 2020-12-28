@@ -38,5 +38,12 @@
     "svelte": "^3.30.0",
     "svelte-preprocess": "^4.6.1",
     "tailwindcss": "^2.0.1"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.27",
+    "@fortawesome/free-brands-svg-icons": "^5.12.0",
+    "@fortawesome/free-regular-svg-icons": "^5.12.0",
+    "@fortawesome/free-solid-svg-icons": "^5.12.0",
+    "fontawesome-svelte": "^2.0.0"
   }
 }
