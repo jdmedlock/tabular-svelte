@@ -1,4 +1,5 @@
 <script>
+  import { createEventDispatcher } from 'svelte'
   import { FontAwesomeIcon } from 'fontawesome-svelte'
   import { faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons'
 
@@ -12,8 +13,12 @@
 
   export let definition
 
-  const retrieveDataPage = (rowsToScroll, rowsPerPage) => {
-    return definition.dataSource.reader(rowsToScroll, rowsPerPage)
+  const dispatch = createEventDispatcher()
+
+  let sortOptions
+
+  const retrieveDataPage = (rowsToScroll, rowsPerPage, sortOptions) => {
+    return definition.dataSource.reader(rowsToScroll, rowsPerPage, sortOptions)
   }
 
   const formatComponents = () => {
@@ -26,20 +31,20 @@
         const index = definition.columns.findIndex(column => column.dataName === cellKey);
         switch (definition.columns[index].type) {
           case 'image':
-            componentInvocation = { component: TabImageCell, value: `${ cellValue }` }
+            componentInvocation = { component: TabImageCell, dataName: `${ definition.columns[index].dataName }`, value: `${ cellValue }` }
             break
           case 'pill':
             // Accept `decorators` as an alias for `styles`
             if (definition.columns[index].decorators) {
-              componentInvocation = { component: TabPillCell, value: `${ cellValue }`, 
+              componentInvocation = { component: TabPillCell, dataName: `${ definition.columns[index].dataName }`, value: `${ cellValue }`, 
                 styles: definition.columns[index].decorators }
               break
             }
-            componentInvocation = { component: TabPillCell, value: `${ cellValue }`, 
+            componentInvocation = { component: TabPillCell, dataName: `${ definition.columns[index].dataName }`, value: `${ cellValue }`, 
               styles: definition.columns[index].styles }
             break
           case 'text':
-            componentInvocation = { component: TabTextCell, value: `${ cellValue }` }
+            componentInvocation = { component: TabTextCell, dataName: `${ definition.columns[index].dataName }`, value: `${ cellValue }` }
             break
           default: 
             throw `Unknown cell type encountered (type: ${ definition.columns[index].type })`
@@ -53,7 +58,7 @@
     const newFirstRowToDisplay = $firstRowToDisplay - $rowsPerPage
     if (newFirstRowToDisplay >= 0) {
       firstRowToDisplay.backward($rowsPerPage)
-      data = retrieveDataPage($firstRowToDisplay, $rowsPerPage)
+      data = retrieveDataPage($firstRowToDisplay, $rowsPerPage, sortOptions)
       componentRows = formatComponents()
     }
   }
@@ -62,7 +67,7 @@
     const newFirstRowToDisplay = $firstRowToDisplay + $rowsPerPage
     if (newFirstRowToDisplay <= definition.dataSource.totalRows) {
       firstRowToDisplay.forward($rowsPerPage)
-      data = retrieveDataPage($firstRowToDisplay, $rowsPerPage)
+      data = retrieveDataPage($firstRowToDisplay, $rowsPerPage, sortOptions)
       componentRows = formatComponents()
     }
   }
@@ -74,14 +79,6 @@
     componentRows = formatComponents()
   }
 
-  const sortDescending = () => {
-    console.log('Sort descending ')
-  }
-
-  const sortAscending = () => {
-    console.log('Sort ascending ')
-  }
-
   let currentNoRowsPerPage 
   let data = retrieveDataPage(0,$rowsPerPage)
 
@@ -91,8 +88,20 @@
     rowsPerPage.reset(currentNoRowsPerPage)
   }
   
-  data = retrieveDataPage(0,$rowsPerPage)
+  data = retrieveDataPage(0,$rowsPerPage, sortOptions)
   let componentRows = formatComponents()
+
+  const sortAscending = (columnName) => {
+    sortOptions = { order: 'ASC', dataName: columnName }
+    data = retrieveDataPage($firstRowToDisplay, $rowsPerPage, sortOptions )
+    componentRows = formatComponents()
+  }
+
+  const sortDescending = (columnName) => {
+    sortOptions = { order: 'DESC', dataName: columnName }
+    data = retrieveDataPage($firstRowToDisplay, $rowsPerPage, sortOptions )
+    componentRows = formatComponents()
+  }
 
 </script>
 
@@ -118,10 +127,10 @@
             <div class="flex align-middle">
               { column.heading }
               <span class="ml-5">
-                <a on:click={ sortDescending }>
+                <a on:click={ () => sortDescending(column.dataName) }>
                   <FontAwesomeIcon icon={ faCaretUp } size="lg" class="text-gray-700"/>
                 </a>
-                <a on:click={ sortAscending }>
+                <a on:click={ () => sortAscending(column.dataName) }>
                   <FontAwesomeIcon icon={ faCaretDown } size="lg" class="text-gray-700" />
                 </a>
               </span>
