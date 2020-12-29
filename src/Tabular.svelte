@@ -1,5 +1,4 @@
 <script>
-  import { createEventDispatcher } from 'svelte'
   import { FontAwesomeIcon } from 'fontawesome-svelte'
   import { faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons'
 
@@ -13,15 +12,16 @@
 
   export let definition
 
-  const dispatch = createEventDispatcher()
-
+  let data
+  let componentRows
+  let currentNoRowsPerPage 
   let sortOptions
 
   const retrieveDataPage = (rowsToScroll, rowsPerPage, sortOptions) => {
     return definition.dataSource.reader(rowsToScroll, rowsPerPage, sortOptions)
   }
 
-  const formatComponents = () => {
+  const formatComponents = (data) => {
     return data.map((row) => {
       const rowKeys = Object.keys(row)
       return rowKeys.map((cellKey) => {
@@ -59,7 +59,7 @@
     if (newFirstRowToDisplay >= 0) {
       firstRowToDisplay.backward($rowsPerPage)
       data = retrieveDataPage($firstRowToDisplay, $rowsPerPage, sortOptions)
-      componentRows = formatComponents()
+      componentRows = formatComponents(data)
     }
   }
 
@@ -68,19 +68,28 @@
     if (newFirstRowToDisplay <= definition.dataSource.totalRows) {
       firstRowToDisplay.forward($rowsPerPage)
       data = retrieveDataPage($firstRowToDisplay, $rowsPerPage, sortOptions)
-      componentRows = formatComponents()
+      componentRows = formatComponents(data)
     }
   }
 
   const updateRowsPerPage = (noRowsPerPage) => {
     currentNoRowsPerPage = noRowsPerPage
     rowsPerPage.reset(noRowsPerPage)
-    data = retrieveDataPage(0,$rowsPerPage)
-    componentRows = formatComponents()
+    data = retrieveDataPage(0,$rowsPerPage, sortOptions)
+    componentRows = formatComponents(data)
   }
 
-  let currentNoRowsPerPage 
-  let data = retrieveDataPage(0,$rowsPerPage)
+  const sortAscending = (columnName) => {
+    sortOptions = { order: 'ASC', dataName: columnName }
+    data = retrieveDataPage($firstRowToDisplay, $rowsPerPage, sortOptions )
+    componentRows = formatComponents(data)
+  }
+
+  const sortDescending = (columnName) => {
+    sortOptions = { order: 'DESC', dataName: columnName }
+    data = retrieveDataPage($firstRowToDisplay, $rowsPerPage, sortOptions )
+    componentRows = formatComponents(data)
+  }
 
   if ($rowsPerPage === 0) {
     currentNoRowsPerPage = definition.dataSource.rowsPerPage === -1 
@@ -89,19 +98,7 @@
   }
   
   data = retrieveDataPage(0,$rowsPerPage, sortOptions)
-  let componentRows = formatComponents()
-
-  const sortAscending = (columnName) => {
-    sortOptions = { order: 'ASC', dataName: columnName }
-    data = retrieveDataPage($firstRowToDisplay, $rowsPerPage, sortOptions )
-    componentRows = formatComponents()
-  }
-
-  const sortDescending = (columnName) => {
-    sortOptions = { order: 'DESC', dataName: columnName }
-    data = retrieveDataPage($firstRowToDisplay, $rowsPerPage, sortOptions )
-    componentRows = formatComponents()
-  }
+  componentRows = formatComponents(data)
 
 </script>
 
