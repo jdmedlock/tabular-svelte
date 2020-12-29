@@ -127,12 +127,12 @@
             <div class="flex align-middle">
               { column.heading }
               <span class="ml-5">
-                <div on:click={ () => sortDescending(column.dataName) }>
-                  <FontAwesomeIcon icon={ faCaretUp } size="lg" class="text-gray-700"/>
-                </div>
-                <div on:click={ () => sortAscending(column.dataName) }>
+                <span on:click={ () => sortAscending(column.dataName) }>
                   <FontAwesomeIcon icon={ faCaretDown } size="lg" class="text-gray-700" />
-                </div>
+                </span>
+                <span on:click={ () => sortDescending(column.dataName) }>
+                  <FontAwesomeIcon icon={ faCaretUp } size="lg" class="text-gray-700"/>
+                </span>
               </span>
             </div>
           </th>
