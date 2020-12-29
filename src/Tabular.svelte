@@ -21,29 +21,43 @@
     return definition.dataSource.reader(rowsToScroll, rowsPerPage, sortOptions)
   }
 
+  const createComponent = (cellId, component, dataName, value, styles) => {
+    return {
+      id: cellId,
+      component: component, 
+      dataName: dataName, 
+      value: value, 
+      styles: styles !== undefined ? styles : ''
+    }
+  }
+
   const formatComponents = (data) => {
     return data.map((row) => {
+      let cellKeySeqNo = 0
       const rowKeys = Object.keys(row)
       return rowKeys.map((cellKey) => {
-        const cellValue = row[cellKey]
         let componentInvocation
+
+        const cellValue = row[cellKey]
         const index = definition.columns.findIndex(column => column.dataName === cellKey);
+        
+        cellKeySeqNo = ++cellKeySeqNo
+        const cellId = row.email.concat(definition.columns[index].dataName,cellKeySeqNo)
+        
         switch (definition.columns[index].type) {
           case 'image':
-            componentInvocation = { component: TabImageCell, dataName: `${ definition.columns[index].dataName }`, value: `${ cellValue }` }
+            componentInvocation = createComponent(cellId, TabImageCell, definition.columns[index].dataName, cellValue)
             break
           case 'pill':
             // Accept `decorators` as an alias for `styles`
             if (definition.columns[index].decorators) {
-              componentInvocation = { component: TabPillCell, dataName: `${ definition.columns[index].dataName }`, value: `${ cellValue }`, 
-                styles: definition.columns[index].decorators }
+              componentInvocation = createComponent(cellId, TabPillCell, definition.columns[index].dataName, cellValue, definition.columns[index].decorators)
               break
             }
-            componentInvocation = { component: TabPillCell, dataName: `${ definition.columns[index].dataName }`, value: `${ cellValue }`, 
-              styles: definition.columns[index].styles }
+            componentInvocation = createComponent(cellId, TabPillCell, definition.columns[index].dataName, cellValue, definition.columns[index].styles)
             break
           case 'text':
-            componentInvocation = { component: TabTextCell, dataName: `${ definition.columns[index].dataName }`, value: `${ cellValue }` }
+            componentInvocation = createComponent(cellId, TabTextCell, definition.columns[index].dataName, cellValue)
             break
           default: 
             throw `Unknown cell type encountered (type: ${ definition.columns[index].type })`
@@ -99,7 +113,6 @@
   
   data = retrieveDataPage(0,$rowsPerPage, sortOptions)
   componentRows = formatComponents(data)
-  console.log('componentRows: ', componentRows)
 </script>
 
 <!-- Based on https://tailwindcomponents.com/component/table-responsive-with-filters -->
@@ -139,7 +152,7 @@
       <tbody>
         {#each componentRows as row}
           <tr>
-          {#each row as cell (Math.random())}
+          {#each row as cell (cell.id)}
             <td class="px-2 py-5 border-b border-gray-200 bg-white text-sm">
               {#if cell.component === TabPillCell}
                 <svelte:component this={ cell.component } value={ cell.value } styles={ cell.styles } />
