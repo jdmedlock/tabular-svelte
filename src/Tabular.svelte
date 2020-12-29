@@ -27,7 +27,6 @@
       return rowKeys.map((cellKey) => {
         const cellValue = row[cellKey]
         let componentInvocation
-
         const index = definition.columns.findIndex(column => column.dataName === cellKey);
         switch (definition.columns[index].type) {
           case 'image':
@@ -80,6 +79,7 @@
   }
 
   const sortAscending = (columnName) => {
+    console.log()
     sortOptions = { order: 'ASC', dataName: columnName }
     data = retrieveDataPage($firstRowToDisplay, $rowsPerPage, sortOptions )
     componentRows = formatComponents(data)
@@ -99,7 +99,7 @@
   
   data = retrieveDataPage(0,$rowsPerPage, sortOptions)
   componentRows = formatComponents(data)
-
+  console.log('componentRows: ', componentRows)
 </script>
 
 <!-- Based on https://tailwindcomponents.com/component/table-responsive-with-filters -->
@@ -139,7 +139,7 @@
       <tbody>
         {#each componentRows as row}
           <tr>
-          {#each row as cell}
+          {#each row as cell (Math.random())}
             <td class="px-2 py-5 border-b border-gray-200 bg-white text-sm">
               {#if cell.component === TabPillCell}
                 <svelte:component this={ cell.component } value={ cell.value } styles={ cell.styles } />
