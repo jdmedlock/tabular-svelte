@@ -8,6 +8,7 @@ Its major functionality includes:
 
 - Support for text, image, & pill components
 - Forward & backward scrolling
+- Ascending & descending sort controls on each column
 
 These are the only functions available at this time. However, this is an 
 active project and there are plans to add additional features over time.

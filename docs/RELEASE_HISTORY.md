@@ -1,5 +1,9 @@
 # Release History
 
+## 0.1.12 - 29 December 2020
+
+- Add ascending/descending sort icons to each column to give users the
+capability to dynamically sort based on the values in a column.
 ## 0.1.11 - 24 December 2020
 
 - Fix a bug that resulted in incorrect paging when -1 was specified as the 

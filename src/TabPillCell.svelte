@@ -5,7 +5,6 @@
   const pillColor = styles.reduce((color, style) => { 
     return style.value === value ? style.pillColor : color
   }, '')
-
 </script>
 
 <span class="relative inline-block py-1 font-medium text-gray-800 leading-tight">
