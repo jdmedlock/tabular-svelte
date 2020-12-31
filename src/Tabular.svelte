@@ -138,10 +138,10 @@
               { column.heading }
               <span class="ml-5">
                 <span on:click={ () => sortAscending(column.dataName) }>
-                  <FontAwesomeIcon icon={ faCaretDown } size="lg" class="text-gray-700" />
+                  <FontAwesomeIcon icon={ faCaretDown } size="lg" class="text-gray-600" />
                 </span>
                 <span on:click={ () => sortDescending(column.dataName) }>
-                  <FontAwesomeIcon icon={ faCaretUp } size="lg" class="text-gray-700"/>
+                  <FontAwesomeIcon icon={ faCaretUp } size="lg" class="text-gray-600"/>
                 </span>
               </span>
             </div>
