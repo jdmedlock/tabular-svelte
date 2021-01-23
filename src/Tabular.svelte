@@ -42,7 +42,8 @@
         const index = definition.columns.findIndex(column => column.dataName === cellKey);
         
         cellKeySeqNo = ++cellKeySeqNo
-        const cellId = row.email.concat(definition.columns[index].dataName,cellKeySeqNo)
+        const cellId = 0
+        //const cellId = row.uniqueId.concat(definition.columns[index].dataName,cellKeySeqNo)
         
         switch (definition.columns[index].type) {
           case 'image':
@@ -152,7 +153,8 @@
       <tbody>
         {#each componentRows as row}
           <tr>
-          {#each row as cell (cell.id)}
+          {#each row as cell}
+          <!-- {#each row as cell (cell.id)} -->
             <td class="px-2 py-5 border-b border-gray-200 bg-white text-sm">
               {#if cell.component === TabPillCell}
                 <svelte:component this={ cell.component } value={ cell.value } styles={ cell.styles } />
