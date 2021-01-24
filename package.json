@@ -1,6 +1,6 @@
 {
   "name": "tabular-svelte",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "A Svelte component to display tabular data",
   "repository": {
     "type": "git",

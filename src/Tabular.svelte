@@ -21,9 +21,8 @@
     return definition.dataSource.reader(rowsToScroll, rowsPerPage, sortOptions)
   }
 
-  const createComponent = (cellId, component, dataName, value, styles) => {
+  const createComponent = (component, dataName, value, styles) => {
     return {
-      id: cellId,
       component: component, 
       dataName: dataName, 
       value: value, 
@@ -42,23 +41,21 @@
         const index = definition.columns.findIndex(column => column.dataName === cellKey);
         
         cellKeySeqNo = ++cellKeySeqNo
-        const cellId = 0
-        //const cellId = row.uniqueId.concat(definition.columns[index].dataName,cellKeySeqNo)
         
         switch (definition.columns[index].type) {
           case 'image':
-            componentInvocation = createComponent(cellId, TabImageCell, definition.columns[index].dataName, cellValue)
+            componentInvocation = createComponent(TabImageCell, definition.columns[index].dataName, cellValue)
             break
           case 'pill':
             // Accept `decorators` as an alias for `styles`
             if (definition.columns[index].decorators) {
-              componentInvocation = createComponent(cellId, TabPillCell, definition.columns[index].dataName, cellValue, definition.columns[index].decorators)
+              componentInvocation = createComponent(TabPillCell, definition.columns[index].dataName, cellValue, definition.columns[index].decorators)
               break
             }
-            componentInvocation = createComponent(cellId, TabPillCell, definition.columns[index].dataName, cellValue, definition.columns[index].styles)
+            componentInvocation = createComponent(TabPillCell, definition.columns[index].dataName, cellValue, definition.columns[index].styles)
             break
           case 'text':
-            componentInvocation = createComponent(cellId, TabTextCell, definition.columns[index].dataName, cellValue)
+            componentInvocation = createComponent(TabTextCell, definition.columns[index].dataName, cellValue)
             break
           default: 
             throw `Unknown cell type encountered (type: ${ definition.columns[index].type })`
@@ -154,7 +151,6 @@
         {#each componentRows as row}
           <tr>
           {#each row as cell}
-          <!-- {#each row as cell (cell.id)} -->
             <td class="px-2 py-5 border-b border-gray-200 bg-white text-sm">
               {#if cell.component === TabPillCell}
                 <svelte:component this={ cell.component } value={ cell.value } styles={ cell.styles } />

@@ -1,5 +1,8 @@
 # Release History
 
+## 0.1.13 - 23 January 2021
+
+- Hotfix to correct an error calculating the unique cell id 
 ## 0.1.12 - 29 December 2020
 
 - Add ascending/descending sort icons to each column to give users the
